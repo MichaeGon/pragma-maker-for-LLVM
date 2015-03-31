@@ -10,7 +10,7 @@ main = getArgs >>= writePragmas
 writePragmas :: [FilePath] -> IO ()
 writePragmas [] 	 = error "Error: No input"
 writePragmas (_ : []) 	 = error "Error: Distination filepath is needed"
-writePragmas (x : y : _) = getDirectoryContents x >>= makeContents y . filter (isSuffixOf ".lib")
+writePragmas (x : y : _) = getDirectoryContents x >>= makeContents y
 
 makeContents :: FilePath -> [FilePath] -> IO ()
 makeContents y = appendFile y . unlines . foldr ff []
