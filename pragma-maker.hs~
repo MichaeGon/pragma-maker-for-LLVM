@@ -13,7 +13,7 @@ writePragmas (_ : []) 	 = error "Error: Distination filepath is needed"
 writePragmas (x : y : _) = getDirectoryContents x >>= makeContents y . filter (isSuffixOf ".lib")
 
 makeContents :: FilePath -> [FilePath] -> IO ()
-makeContents y = appendFile y . unlines . foldr ff []
+makeContents y = appendFile y . unlines . foldr []
 	where
 	ff x acc
 		| ".lib" `isSuffixOf` x = ("#pragma comment( lib, \"" ++ x ++ "\" )") : acc
