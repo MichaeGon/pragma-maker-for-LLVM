@@ -10,10 +10,10 @@ main = getArgs >>= writePragmas
 writePragmas :: [FilePath] -> IO ()
 writePragmas [] 	 = error "Error: No input"
 writePragmas (_ : []) 	 = error "Error: Distination filepath is needed"
-writePragmas (x : y : _) = getDirectoryContents x >>= makeContents y
+writePragmas (x : y : _) = getDirectoryContents x >>= appendFile y . makeContents
 
-makeContents :: FilePath -> [FilePath] -> IO ()
-makeContents y = appendFile y . unlines . foldr ff []
+makeContents :: [FilePath] -> String
+makeContents = unlines . foldr ff []
 	where
 	ff x acc
 		| ".lib" `isSuffixOf` x = ("#pragma comment( lib, \"" ++ x ++ "\" )") : acc
