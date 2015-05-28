@@ -8,8 +8,8 @@ import System.IO
 main :: IO ()
 main = putStr "Distination filepath>" >> getLine >>= f
 	where
-	f x = putStr ".lib path>" >> getLine >>= f' x
-	f' x y = putStr "include path>" >> getLine >>= f'' x y
+	f x       = putStr ".lib path>" >> getLine >>= f' x
+	f' x y    = putStr "include path>" >> getLine >>= f'' x y
 	f'' x y z = readFile x >>= writeIncludes x z >> writePragmas x y
 
 writePragmas :: FilePath -> FilePath -> IO ()
@@ -29,13 +29,19 @@ searchIncludes :: FilePath -> IO [FilePath]
 searchIncludes  x = getDirectoryContents x >>= searchDir x
 
 searchDir :: FilePath -> [FilePath] -> IO [FilePath]
-searchDir _ [] = return []
+searchDir _ []                         = return []
 searchDir x (z : zs)
-		| ".h" `isSuffixOf` z  = searchDir x zs >>= return . (z :)
-		| '.' `elem` z = searchDir x zs
-		| otherwise = let x' = x ++ "/" ++ z
-					in (liftM2 (++)) (searchIncludes x' >>= return . map  ((z ++) . ('/' :))) (searchDir x zs)
+		| ".h" `isSuffixOf` z  = res >>= return . (z :)
+		| '.' `elem` z         = res
+		| otherwise            = indir +++ res
+		where
+		x' = x ++ "/" ++ z
+		indir = searchIncludes x' >>= return . map ((z ++) . ('/' :))
+		res   = searchDir x zs
 
+infixr 5 +++
+(+++) :: IO [a] -> IO [a] -> IO [a]
+(+++) = liftM2 (++)
 
 makeContents :: [FilePath] -> String
 makeContents = unlines . ("" :) . foldr ff []
