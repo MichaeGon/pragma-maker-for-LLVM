@@ -40,7 +40,7 @@ searchDir x (z : zs)
 		res   = searchDir x zs
 
 infixr 5 +++
-(+++) :: IO [a] -> IO [a] -> IO [a]
+(+++) :: (Monad m) => m [a] -> m [a] -> m [a]
 (+++) = liftM2 (++)
 
 makeContents :: [FilePath] -> String
