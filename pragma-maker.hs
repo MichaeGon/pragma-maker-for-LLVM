@@ -3,14 +3,24 @@ import Control.Exception
 import Control.Monad
 import Data.List
 import System.Directory
+import System.Environment
 import System.IO
 
+-- dist .lib include
 main :: IO ()
+main = do
+	(dist : lib : inc : _) <- getArgs
+	cnt <- readFile dist
+	_ <- writeIncludes dist inc cnt
+	return writePragmas dist lib cnt
+
+{-
 main = putStr "Distination filepath>" >> getLine >>= f
 	where
 	f x       = putStr ".lib path>" >> getLine >>= f' x
 	f' x y    = putStr "include path>" >> getLine >>= f'' x y
 	f'' x y z = readFile x >>= writeIncludes x z >> writePragmas x y
+-}
 
 writePragmas :: FilePath -> FilePath -> IO ()
 writePragmas x y = getDirectoryContents y >>= appendFile x . makeContents
@@ -49,6 +59,3 @@ makeContents = unlines . ("" :) . foldr ff []
 	ff x acc
 		| ".lib" `isSuffixOf` x = ("#pragma comment( lib, \"" ++ x ++ "\" )") : acc
 		| otherwise 		= acc
-
-
-
