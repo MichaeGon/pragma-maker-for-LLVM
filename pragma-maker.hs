@@ -12,7 +12,7 @@ main = do
 	(dist : lib : inc : _) <- getArgs
 	cnt <- readFile dist
 	_ <- writeIncludes dist inc cnt
-	return writePragmas dist lib cnt
+	writePragmas dist lib
 
 {-
 main = putStr "Distination filepath>" >> getLine >>= f
