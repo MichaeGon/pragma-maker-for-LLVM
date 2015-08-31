@@ -14,14 +14,6 @@ main = do
 	_ <- writeIncludes dist inc cnt
 	writePragmas dist lib
 
-{-
-main = putStr "Distination filepath>" >> getLine >>= f
-	where
-	f x       = putStr ".lib path>" >> getLine >>= f' x
-	f' x y    = putStr "include path>" >> getLine >>= f'' x y
-	f'' x y z = readFile x >>= writeIncludes x z >> writePragmas x y
--}
-
 writePragmas :: FilePath -> FilePath -> IO ()
 writePragmas x y = getDirectoryContents y >>= appendFile x . makeContents
 
