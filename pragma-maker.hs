@@ -33,7 +33,7 @@ searchIncludes  x = getDirectoryContents x >>= searchDir x
 searchDir :: FilePath -> [FilePath] -> IO [FilePath]
 searchDir _ []                         = return []
 searchDir x (z : zs)
-		| ".h" `isSuffixOf` z  = res >>= return . (z :)
+		| ".h" `isSuffixOf` z  = liftM (z :) res
 		| '.' `elem` z         = res
 		| otherwise            = indir +++ res
 		where
