@@ -38,7 +38,7 @@ searchDir x (z : zs)
 		| otherwise            = indir +++ res
 		where
 		x' = x ++ "/" ++ z
-		indir = searchIncludes x' >>= return . map ((z ++) . ('/' :))
+		indir = liftM (map ((z ++) . ('/' :))) $ searchIncludes x'--searchIncludes x' >>= return . map ((z ++) . ('/' :))
 		res   = searchDir x zs
 
 infixr 5 +++
