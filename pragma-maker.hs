@@ -39,7 +39,7 @@ searchDir x (z : zs)
 		| otherwise            = indir +++ res
 		where
 		x' = x ++ "/" ++ z
-		indir = map ((z ++) . ('/' :)) <$> searchIncludes x'--searchIncludes x' >>= return . map ((z ++) . ('/' :))
+		indir = map ((z ++) . ('/' :)) <$> searchIncludes x'
 		res   = searchDir x zs
 
 infixr 5 +++
