@@ -1,7 +1,7 @@
 {-# OPTIONS -Wall -Werror #-}
 import Control.Applicative
 import Control.Exception
-import Control.Monad
+--import Control.Monad
 import Data.List
 import System.Directory
 import System.Environment
@@ -36,15 +36,17 @@ searchDir _ []                         = return []
 searchDir x (z : zs)
 		| ".h" `isSuffixOf` z  = (z :) <$> res
 		| '.' `elem` z         = res
-		| otherwise            = indir +++ res
+		| otherwise            = (++) <$> indir <*> res
 		where
 		x' = x ++ "/" ++ z
 		indir = map ((z ++) . ('/' :)) <$> searchIncludes x'
 		res   = searchDir x zs
 
+{-
 infixr 5 +++
 (+++) :: (Monad m) => m [a] -> m [a] -> m [a]
 (+++) = liftM2 (++)
+-}
 
 makeContents :: [FilePath] -> String
 makeContents = unlines . ("" :) . foldr ff []
