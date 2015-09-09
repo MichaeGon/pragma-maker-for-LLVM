@@ -38,7 +38,7 @@ searchDir x (z : zs)
 		| '.' `elem` z         = res
 		| otherwise            = (++) <$> indir <*> res
 		where
-		x' = x ++ "/" ++ z
+		x' = x ++ '/' : z
 		indir = map ((z ++) . ('/' :)) <$> searchIncludes x'
 		res   = searchDir x zs
 
