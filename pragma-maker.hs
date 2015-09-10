@@ -1,7 +1,6 @@
 {-# OPTIONS -Wall -Werror #-}
 import Control.Applicative
 import Control.Exception
---import Control.Monad
 import Data.List
 import System.Directory
 import System.Environment
@@ -9,11 +8,18 @@ import System.IO
 
 -- dist .lib include
 main :: IO ()
+main = getArgs >>= write
+	where
+		write (dist : lib : inc : _) = readFile dist >>= writeIncludes dist inc >> writePragmas dist lib
+		write _ = error "write"
+{-
 main = do
 	(dist : lib : inc : _) <- getArgs
 	cnt <- readFile dist
 	_ <- writeIncludes dist inc cnt
 	writePragmas dist lib
+-}
+
 
 writePragmas :: FilePath -> FilePath -> IO ()
 writePragmas x y = getDirectoryContents y >>= appendFile x . makeContents
