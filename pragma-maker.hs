@@ -12,14 +12,6 @@ main = getArgs >>= write
 	where
 		write (dist : lib : inc : _) = readFile dist >>= writeIncludes dist inc >> writePragmas dist lib
 		write _ = error "write"
-{-
-main = do
-	(dist : lib : inc : _) <- getArgs
-	cnt <- readFile dist
-	_ <- writeIncludes dist inc cnt
-	writePragmas dist lib
--}
-
 
 writePragmas :: FilePath -> FilePath -> IO ()
 writePragmas x y = getDirectoryContents y >>= appendFile x . makeContents
@@ -47,12 +39,6 @@ searchDir x (z : zs)
 		x' = x ++ '/' : z
 		indir = map ((z ++) . ('/' :)) <$> searchIncludes x'
 		res   = searchDir x zs
-
-{-
-infixr 5 +++
-(+++) :: (Monad m) => m [a] -> m [a] -> m [a]
-(+++) = liftM2 (++)
--}
 
 makeContents :: [FilePath] -> String
 makeContents = unlines . ("" :) . foldr ff []
