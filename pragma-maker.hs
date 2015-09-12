@@ -1,6 +1,7 @@
 {-# OPTIONS -Wall -Werror #-}
 import Control.Applicative
 import Control.Exception
+import Control.Monad
 import Data.List
 import System.Directory
 import System.Environment
@@ -14,7 +15,8 @@ main = getArgs >>= write
 		write _ = error "write"
 
 writePragmas :: FilePath -> FilePath -> IO ()
-writePragmas x y = getDirectoryContents y >>= appendFile x . makeContents
+--writePragmas x y = getDirectoryContents y >>= appendFile x . makeContents
+writePragmas x = appendFile x . makeContents <=< getDirectoryContents
 
 writeIncludes :: FilePath -> FilePath -> String -> IO ()
 writeIncludes x y zs = bracketOnError (openTempFile "." "temp") finalize editTemp
