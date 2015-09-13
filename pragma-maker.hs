@@ -15,7 +15,6 @@ main = getArgs >>= write
 		write _ = error "write"
 
 writePragmas :: FilePath -> FilePath -> IO ()
---writePragmas x y = getDirectoryContents y >>= appendFile x . makeContents
 writePragmas x = appendFile x . makeContents <=< getDirectoryContents
 
 writeIncludes :: FilePath -> FilePath -> String -> IO ()
