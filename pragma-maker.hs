@@ -1,5 +1,5 @@
 {-# OPTIONS -Wall -Werror #-}
-import Control.Applicative
+--import Control.Applicative
 import Control.Exception
 import Control.Monad
 import Data.List
